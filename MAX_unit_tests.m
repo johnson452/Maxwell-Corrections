@@ -14,7 +14,7 @@ close all
 %%% WENO TESTING %%%
 grid_struct.moments_type = "Simple_No_Weno_reconst_fv";
 grid_struct.Nx = 1;
-grid_struct.Nv = 10; %150;
+grid_struct.Nv = 12; %150;
 Nx = grid_struct.Nx;
 Nv = grid_struct.Nv;
 f_IC = zeros(Nx,Nv);
@@ -53,12 +53,17 @@ ts = [0.25,0.75];
 % Fix the maxwellian
 fprintf("First correction:\n")
 tic
-f_fixed_Picard = fix_max(f_IC,n0,u0,T0,app);
+[f_fixed_Picard, error_Picard] = fix_max(f_IC,n0,u0,T0,app);
 toc
 
 fprintf("\n\nSecond correction:\n")
 tic
-f_fixed_Newton = fix_max_2(f_IC,n0,u0,T0,app);
+[f_fixed_Newton, error_Newton] = fix_max_2(f_IC,n0,u0,T0,app);
+toc
+
+fprintf("\n\nThird correction:\n")
+tic
+[f_fixed_Anderson, error_Anderson] = fix_max_3(f_IC,n0,u0,T0,app);
 toc
 
 % Initial projection/fixed
@@ -69,19 +74,25 @@ u_corr = [u1,u2];
 T_corr = [T1,T2];
 
 
+% Make the figure window
+figure('Units', 'inches', 'Position', [7, 7, 15, 6]);
+
+
 % Plot the exact solution
-subplot(2,3,1)
+subplot(2,4,1)
 plot(grid_struct.v,f_IC,"-*blue",LineWidth=2)
+hold on
+plot(grid_struct.v,f_fixed_Picard,LineWidth=2)
 hold on
 plot(grid_struct.v,f_fixed_Newton,":",LineWidth=2)
 title("f(v)")
 xlabel("v")
 ylabel("f(v)")
-legend("IC","Fixed")
+legend("IC","Fixed (P)","Fixed (N)")
 
 
 % Plot the moments
-subplot(2,3,2)
+subplot(2,4,2)
 plot(t,n0 + t*0,"black")
 hold on
 plot(ts,n_corr,"*")
@@ -91,7 +102,7 @@ ylabel("n")
 legend("Specified","Fixed")
 
 % Plot the moments
-subplot(2,3,3)
+subplot(2,4,3)
 plot(t,u0 + t*0,"black")
 hold on
 plot(ts,u_corr,"*")
@@ -101,7 +112,7 @@ ylabel("u")
 legend("Specified","Fixed")
 
 % Plot the moments
-subplot(2,3,4)
+subplot(2,4,4)
 plot(t,T0 + t*0,"black")
 hold on
 plot(ts,T_corr,"*")
@@ -111,9 +122,51 @@ ylabel("T")
 legend("Specified","Fixed")
 
 % Plot the moments
-subplot(2,3,5)
+subplot(2,4,5)
 plot(grid_struct.v,f_IC - f_fixed_Newton,LineWidth=2)
 title("f(v) [IC - fixed]")
 xlabel("v")
 ylabel("f(v)")
-grid_struct.on
+grid on
+
+% Plot the error convergence
+subplot(2,4,6)
+semilogy(abs(error_Picard(1,:)) + 1e-16,LineWidth=2)
+hold on
+semilogy(abs(error_Newton(1,:)) + 1e-16,LineWidth=2)
+% hold on
+% semilogy(abs(error_Anderson(1,:)) + 1e-16,LineWidth=2)
+title("\epsilon(n) vs Iter")
+xlabel("Iter")
+ylabel("Error in Density: \epsilon(n)")
+%legend("Picard","Newton", "Anderson")
+legend("Picard","Newton")
+grid on
+
+% Plot the error convergence
+subplot(2,4,7)
+semilogy(abs(error_Picard(2,:)) + 1e-16,LineWidth=2)
+hold on
+semilogy(abs(error_Newton(2,:)) + 1e-16,LineWidth=2)
+% hold on
+% semilogy(abs(error_Anderson(2,:)) + 1e-16,LineWidth=2)
+title("\epsilon(v) vs Iter")
+xlabel("Iter")
+ylabel("Error in Velocity: \epsilon(v)")
+%legend("Picard","Newton", "Anderson")
+legend("Picard","Newton")
+grid on
+
+% Plot the error convergence
+subplot(2,4,8)
+semilogy(abs(error_Picard(3,:)) + 1e-16,LineWidth=2)
+hold on
+semilogy(abs(error_Newton(3,:)) + 1e-16,LineWidth=2)
+% hold on
+% semilogy(abs(error_Anderson(3,:)) + 1e-16,LineWidth=2)
+title("\epsilon(T) vs Iter")
+xlabel("Iter")
+ylabel("Error in Temperature: \epsilon(T)")
+%legend("Picard","Newton", "Anderson")
+legend("Picard","Newton")
+grid on

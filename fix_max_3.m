@@ -1,4 +1,12 @@
 function [M_Eq,error] = fix_max(M_Eq,n,u,T,app)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOT WORKING %
+fprintf("NOT WORKING\n");
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 % fix Maxwellian distribtion
 
 % Compute the moments

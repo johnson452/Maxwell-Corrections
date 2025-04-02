@@ -4,7 +4,7 @@ function [n,u,T] = moments(f,app)
 
 
 % Integrate to get the moments
-if strcmp(app.grid.moments_type, "WENO_Reconstructed_fv") == 1
+if strcmp(app.grid_struct.moments_type, "WENO_Reconstructed_fv") == 1
 
     % Reconstruct f(v)
     dir = "v";
@@ -19,7 +19,7 @@ if strcmp(app.grid.moments_type, "WENO_Reconstructed_fv") == 1
     n = quad_eval_mom(poly_array_v_tilde,kernel_n,app);
     nu = quad_eval_mom(poly_array_v_tilde,kernel_v,app);
     nu_sq = quad_eval_mom(poly_array_v_tilde,kernel_v_sq,app);
-elseif strcmp(app.grid.moments_type, "Simple_No_Weno_reconst_fv") == 1
+elseif strcmp(app.grid_struct.moments_type, "Simple_No_Weno_reconst_fv") == 1
     [n,nu,nu_sq] = simple_moments(f,app);
 end
 
@@ -40,15 +40,15 @@ function [n,nu,nu_sq] = simple_moments(f,app)
 sz_f = size(f);
 
 % Grab quantities
-v = app.grid.v;
-dv = app.grid.dv;
+v = app.grid_struct.v;
+dv = app.grid_struct.dv;
 
 % Build moment arrays
 n = zeros(sz_f(1),1);
 nu = zeros(sz_f(1),1);
 nu_sq = zeros(sz_f(1),1);
 
-% Iterate over the whole grid
+% Iterate over the whole grid_struct
 for i = 1:sz_f(1)
     n(i) = dv*sum(f(i,:));
     nu(i) = dv*sum(v.*f(i,:));
