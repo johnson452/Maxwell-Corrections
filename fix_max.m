@@ -15,7 +15,7 @@ max_diff = max([n_diff,u_diff,T_diff]);
 
 % Number of fixing iterations:
 niter = 0;
-tol = 1e-15;
+tol = 1e-14;
 
 % Intial vector
 M0 = [n,u,T];

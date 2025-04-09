@@ -134,13 +134,13 @@ subplot(2,4,6)
 semilogy(abs(error_Picard(1,:)) + 1e-16,LineWidth=2)
 hold on
 semilogy(abs(error_Newton(1,:)) + 1e-16,LineWidth=2)
-% hold on
-% semilogy(abs(error_Anderson(1,:)) + 1e-16,LineWidth=2)
+hold on
+semilogy(abs(error_Anderson(1,:)) + 1e-16,LineWidth=2)
 title("\epsilon(n) vs Iter")
 xlabel("Iter")
 ylabel("Error in Density: \epsilon(n)")
-%legend("Picard","Newton", "Anderson")
-legend("Picard","Newton")
+legend("Picard","Newton", "Anderson")
+%legend("Picard","Newton")
 grid on
 
 % Plot the error convergence
@@ -148,13 +148,13 @@ subplot(2,4,7)
 semilogy(abs(error_Picard(2,:)) + 1e-16,LineWidth=2)
 hold on
 semilogy(abs(error_Newton(2,:)) + 1e-16,LineWidth=2)
-% hold on
-% semilogy(abs(error_Anderson(2,:)) + 1e-16,LineWidth=2)
+hold on
+semilogy(abs(error_Anderson(2,:)) + 1e-16,LineWidth=2)
 title("\epsilon(v) vs Iter")
 xlabel("Iter")
 ylabel("Error in Velocity: \epsilon(v)")
-%legend("Picard","Newton", "Anderson")
-legend("Picard","Newton")
+legend("Picard","Newton", "Anderson")
+%legend("Picard","Newton")
 grid on
 
 % Plot the error convergence
@@ -162,11 +162,10 @@ subplot(2,4,8)
 semilogy(abs(error_Picard(3,:)) + 1e-16,LineWidth=2)
 hold on
 semilogy(abs(error_Newton(3,:)) + 1e-16,LineWidth=2)
-% hold on
-% semilogy(abs(error_Anderson(3,:)) + 1e-16,LineWidth=2)
+hold on
+semilogy(abs(error_Anderson(3,:)) + 1e-16,LineWidth=2)
 title("\epsilon(T) vs Iter")
 xlabel("Iter")
 ylabel("Error in Temperature: \epsilon(T)")
-%legend("Picard","Newton", "Anderson")
-legend("Picard","Newton")
+legend("Picard","Newton", "Anderson")
 grid on

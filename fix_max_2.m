@@ -13,7 +13,7 @@ Q = [n,u,T];
 
 % Number of fixing iterations:
 niter = 0;
-tol = 1e-15;
+tol = 1e-14;
 
 % Inital guess
 alphak = Q_to_alpha(n_c,u_c,T_c,kb,m0);
